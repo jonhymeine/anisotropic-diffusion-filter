@@ -4,8 +4,8 @@ import numpy as np
 def calculate_decay_factor(lambida, tau, alpha, beta):
     diff = abs(alpha - beta)
     inner_exp = math.exp(-(diff ** (1 / 5) / lambida) / 5)
-    weight = (1 - math.exp(-8 * tau * inner_exp)) / 8
-    return weight
+    decay_factor = (1 - math.exp(-8 * tau * inner_exp)) / 8
+    return decay_factor
 
 def get_decay_factor_lut(lambida, tau):
     possible_calculate_decay_factor_values = []
