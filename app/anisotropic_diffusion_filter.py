@@ -8,13 +8,12 @@ def calculate_decay_factor(lambida, tau, alpha, beta):
     return decay_factor
 
 def get_decay_factor_lut(lambida, tau):
-    possible_calculate_decay_factor_values = []
+    decay_factor_lut = []
     for i in range(256):
-        possible_calculate_decay_factor_values.append(
-            calculate_decay_factor(lambida, tau, 255, 255 - i))
-    return possible_calculate_decay_factor_values
+        decay_factor_lut.append(calculate_decay_factor(lambida, tau, 255, 255 - i))
+    return decay_factor_lut
 
-def build_kernel(img_area, possible_calculate_decay_factor_values):
+def build_kernel(img_area, decay_factor_lut):
     kernel = np.zeros((3, 3), dtype=float)
     alpha = img_area[1, 1]
 
@@ -23,7 +22,7 @@ def build_kernel(img_area, possible_calculate_decay_factor_values):
             if i == 1 and j == 1:
                 continue
             value_index = int(alpha - img_area[i, j].astype(float))
-            kernel[i, j] = possible_calculate_decay_factor_values[value_index]
+            kernel[i, j] = decay_factor_lut[value_index]
 
     kernel[1, 1] = 1 - np.sum(kernel)
     return kernel
